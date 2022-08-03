@@ -1,2 +1,2 @@
 #!/usr/bin/env ruby
-RGV[0].scan(/^\d{10}$/).join
+#puts ARGV[0].scan(/School/).join
