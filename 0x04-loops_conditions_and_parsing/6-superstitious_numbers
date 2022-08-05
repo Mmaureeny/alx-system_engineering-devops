@@ -27,4 +27,4 @@ do
     esac
 
     let COUNTER+=1
-done`
+done
