@@ -16,6 +16,5 @@ backend web_servers
 \tserver 20549-web-01 3.239.58.144:80 check
 \tserver 20549-web-02 100.24.126.136:80 check
 ' >> /etc/haproxy/haproxy.cfg 
-echo -e '
-ENABLED=1' >> /etc/default/haproxy
+echo -e "$config" | sudo tee -a /etc/haproxy/haproxy.cfg
 sudo service haproxy start
