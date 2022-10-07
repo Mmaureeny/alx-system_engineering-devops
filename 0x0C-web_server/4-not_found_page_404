@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# Configuring the Nginx server so that /redirect_me is redirecting to another page
+# Configuring the Nginx server that have a custom 404 page that contains the string Ceci n'est pas une page.
 sudo apt-get update -y
 sudo apt-get install nginx -y
+sudo ufw allow 'Nginx HTTP'
+sudo chmod -R 755 /var/www
 echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
+
 SERVER_CONFIG=\
 "server {
         listen 80;
@@ -22,11 +25,15 @@ SERVER_CONFIG=\
 		root /var/www/error/;
 		internal;
 	}
-}"
+}
+"
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
 bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-enabled/default"
-if [ "$(pgrep -c nginx)" -le 0 ]; then
+
+if [ "$(pgrep -c nginx)" -le 0 ];
+then
 	service nginx start
 else
 	service nginx restart
-fi
-
+fi;
