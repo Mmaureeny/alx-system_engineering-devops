@@ -4,32 +4,31 @@ sudo apt-get update -y
 sudo apt-get install nginx -y
 sudo ufw allow 'Nginx HTTP'
 sudo chmod -R 755 /var/www
-echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
+echo "Hello World!" > /var/www/html/index.html
 
 SERVER_CONFIG=\
 "server {
-        listen 80;
-        listen [::]:80;
-        root /var/www/your_domain/html;
+        listen 80 default_server;
+        listen [::]:80 default_server;
+               root /var/www/html;
         index index.html index.htm index.nginx-debian.html;
-        server_name ubuntu_44.192.253.90 www.ubuntu_44.192.253.90;
+        server_name _;
         location / {
-                try_files $uri $uri/ =404;
+                try_files \$uri \$uri/ =404;
+        }
+        error_page 404 /404.html;
+        location  /404.html {
+            internal;
         }
         
         if (\$request_filename ~ redirect_me){
-		rewrite ^ https://sketchfab.com/bluepeno/models permanent;
-	}
-	error_page 404 /404.html;
-	location = /404.html {
-		root /var/www/error/;
-		internal;
-	}
+            rewrite ^ https://www.holbertonschool.com/watch?v=QH2-TGUlwu4 permanent;
+}
 }
 "
 echo "Ceci n'est pas une page" > /var/www/html/404.html
 
-bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-enabled/default"
+echo -e '$SERVER_CONFIG' > /etc/nginx/sites-enabled/default
 
 if [ "$(pgrep -c nginx)" -le 0 ];
 then
